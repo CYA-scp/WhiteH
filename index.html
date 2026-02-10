@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<title>Beyaz Kalp Çizimi</title>
+<meta charset="UTF-8" />
+<title>Clean Glow Heart</title>
+
 <style>
   body {
     margin: 0;
@@ -10,34 +11,65 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #111;
+    background: radial-gradient(circle at center, #222 0%, #000 70%);
   }
 
   svg {
-    width: 200px;
+    width: 220px;
+    animation: beat 3.5s ease-in-out infinite 6s;
   }
 
   path {
-    fill: none;
+    fill: transparent;
     stroke: white;
-    stroke-width: 6;
+    stroke-width: 4;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
-    animation: drawHeart 4s ease-in-out forwards;
+    animation:
+      drawHeart 4s ease-in-out forwards,
+      fillHeart 1.5s ease-in-out forwards 4s,
+      glowPulse 2.5s ease-in-out infinite;
+    filter: url(#softGlow);
   }
 
   @keyframes drawHeart {
-    to {
-      stroke-dashoffset: 0;
-    }
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes fillHeart {
+    from { fill: transparent; }
+    to   { fill: rgba(255,255,255,0.95); }
+  }
+
+  @keyframes glowPulse {
+    0%   { stroke-opacity: 0.7; }
+    50%  { stroke-opacity: 1; }
+    100% { stroke-opacity: 0.7; }
+  }
+
+  @keyframes beat {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.035); }
   }
 </style>
 </head>
+
 <body>
 
 <svg viewBox="0 0 100 90">
+  <defs>
+    <!-- GERÇEK GLOW: border yok -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
   <path d="
     M50 80
     L10 40
